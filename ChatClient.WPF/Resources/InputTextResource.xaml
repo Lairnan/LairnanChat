@@ -1,0 +1,76 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:ChatClient.WPF.Controls">
+    <Style x:Key="TextPassBoxStyle" BasedOn="{StaticResource MainStyle}">
+        <Setter Property="TextBox.BorderBrush" Value="White"/>
+        <Setter Property="TextBox.BorderThickness" Value="0 0 0 1"/>
+        <Setter Property="TextBox.Padding" Value="5 2"/>
+        <Setter Property="TextBox.IsTabStop" Value="True"/>
+        <Setter Property="TextBox.Margin" Value="0"/>
+        <Setter Property="TextBox.CaretBrush" Value="White"/>
+        <Setter Property="TextBox.Background" Value="Transparent"/>
+        <Setter Property="TextBox.Cursor" Value="IBeam"/>
+        <Setter Property="TextBox.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid Background="{TemplateBinding TextBox.Background}"
+                          Width="{TemplateBinding TextBox.Width}"
+                          x:Name="PART_Grid">
+                        <Border BorderBrush="White"
+                                BorderThickness="0 0 0 1"
+                                Margin="5 0"
+                                x:Name="PART_Border"/>
+                        <ScrollViewer Margin="{TemplateBinding TextBox.Padding}"
+                                      Foreground="{TemplateBinding TextBox.Foreground}"
+                                      x:Name="PART_ContentHost"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="TextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource TextPassBoxStyle}"></Style>
+    <Style TargetType="controls:InputTextBox" BasedOn="{StaticResource MainStyle}">
+        <Setter Property="BorderBrush" Value="White"/>
+        <Setter Property="BorderThickness" Value="0 0 0 1"/>
+        <Setter Property="Padding" Value="3 2"/>
+        <Setter Property="IsTabStop" Value="True"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="CaretBrush" Value="White"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Cursor" Value="IBeam"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:InputTextBox">
+                    <Grid Background="{TemplateBinding Background}"
+                          Width="{TemplateBinding Width}"
+                          x:Name="PART_Grid">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5"
+                                Width="{TemplateBinding ActualWidth}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                x:Name="PART_Border"/>
+                        <ScrollViewer Margin="{TemplateBinding Padding}"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      x:Name="PART_ContentHost"/>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPlaceHolder" Value="True">
+                            <Setter TargetName="PART_ContentHost" Property="Opacity" Value="0.7"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="PasswordBox" BasedOn="{StaticResource TextPassBoxStyle}"></Style>
+    <Style TargetType="RichTextBox" BasedOn="{StaticResource MainStyle}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,14 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converter="clr-namespace:ChatClient.WPF.Converters">
+    <converter:ActualWidthConverter x:Key="ActualWidthConverter" />
+    <converter:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
+    <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <converter:AnyItemsToVisibilityConverter x:Key="AnyItemsToVisibilityConverter"/>
+    <converter:PasswordStrengthToBorderBrushConverter x:Key="PasswordStrengthToBorderBrushConverter"/>
+    <converter:PasswordStrengthToGridLengthConverter x:Key="PasswordStrengthToGridLengthConverter"/>
+    <converter:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+    <converter:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter"/>
+    <converter:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
+    <converter:ServerStatusToColorConverter x:Key="ServerStatusToColorConverter"/>
+</ResourceDictionary>

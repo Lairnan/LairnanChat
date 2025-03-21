@@ -1,0 +1,91 @@
+<UserControl x:Class="ChatClient.WPF.Controls.MenuBarPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Border Background="#333">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Border Background="#333"
+                    Grid.Row="0"
+                    MouseEnter="PnlControlBar_OnMouseEnter"
+                    MouseLeftButtonDown="PnlControlBar_OnMouseLeftButtonDown">
+                <Grid Margin="15 15 15 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center">
+                        <Image Margin="5 0"
+                               Width="32"
+                               Source="/Images/logo.png" />
+                        <TextBlock FontSize="16"
+                                   Foreground="White"
+                                   Margin="0 5 5 0"
+                                   Text="Lairnan Chat" />
+                    </StackPanel>
+                    <ContentPresenter x:Name="HeaderPresenter"
+                                      Grid.Column="1"
+                                      ContentSource="Header"
+                                      VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="2"
+                               TextAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="18"
+                               Foreground="White"
+                               Margin="5,5"
+                               Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}">
+                        <TextBlock.ToolTip>
+                            <Binding RelativeSource="{RelativeSource Mode=Self}"
+                                     Path="Text" />
+                        </TextBlock.ToolTip>
+                    </TextBlock>
+                    <StackPanel Grid.Column="3"
+                                Orientation="Horizontal">
+                        <Button Margin="3 0"
+                                Padding="0"
+                                Width="40"
+                                Click="MinimizeBtn_Click"
+                                Style="{StaticResource MainUpButtonStyle}"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Content="0"
+                                FontFamily="Webdings" />
+                        <Button x:Name="SwitchStateBtn"
+                                Margin="3 0"
+                                Padding="0"
+                                Width="40"
+                                Click="SwitchStateBtn_Click"
+                                Style="{StaticResource MainUpButtonStyle}"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Content="{Binding }"
+                                FontFamily="Webdings" />
+                        <Button Margin="3 0"
+                                Padding="0"
+                                Width="40"
+                                Click="CloseBtn_Click"
+                                Style="{StaticResource MainUpButtonStyle}"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Content="r"
+                                FontFamily="Webdings" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <ContentPresenter x:Name="ContentPresenter"
+                              Margin="15 0 15 15"
+                              ContentSource="Content"
+                              Grid.Row="1" />
+        </Grid>
+    </Border>
+</UserControl>
