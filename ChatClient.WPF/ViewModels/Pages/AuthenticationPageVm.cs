@@ -43,7 +43,6 @@ public class AuthenticationPageVm : NotifyBase, IAuthenticationPageVm
         _chatServerManager = chatServerManager;
         _viewFactory = viewFactory;
         OnLanguagesChange(SelectedLanguage);
-        _chatService = _chatServerManager.ActiveChatService;
         _chatServerManager.ActiveChatServiceChanged += ActiveServerChanged;
     }
 
@@ -122,7 +121,7 @@ public class AuthenticationPageVm : NotifyBase, IAuthenticationPageVm
     
     public ICommand LoginCommand => _loginCommand ??= new RelayCommand(async void () =>
     {
-        if (_chatService == null)
+        if (_chatServerManager.ActiveChatService == null)
         {
             ErrorMessage = "Need to select server";
             return;
@@ -131,7 +130,7 @@ public class AuthenticationPageVm : NotifyBase, IAuthenticationPageVm
         var authUser = new AuthUser(Username, Password, _selectedLanguage);
         try
         {
-            var chatService = await _chatServerManager.ConnectAsync(_chatService, authUser);
+            var chatService = await _chatServerManager.ConnectAsync(authUser);
             if (chatService == null)
             {
                 ErrorMessage = "Error connecting to server. See logs for details.";
@@ -152,12 +151,16 @@ public class AuthenticationPageVm : NotifyBase, IAuthenticationPageVm
             ErrorMessage = "Need to select server";
             return;
         }
+        ErrorMessage = string.Empty;
+        var authUser = new AuthUser(Username, Password, _selectedLanguage);
         try
         {
-            if (_chatService.GetConnectionStatus() != WebSocketState.Open)
+            var chatService = await _chatServerManager.ConnectAsync(authUser, true);
+            if (chatService == null)
+            {
+                ErrorMessage = "Error connecting to server. See logs for details.";
                 return;
-
-            await _chatService.DisconnectAsync();
+            }
         }
         catch (Exception ex)
         {

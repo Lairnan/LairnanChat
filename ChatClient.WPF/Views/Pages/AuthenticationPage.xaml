@@ -89,8 +89,6 @@
 
             <Button Content="Войти" Command="{Binding LoginCommand}"
                     Style="{StaticResource MainButtonStyle}" Height="40" />
-            <Button Content="Выйти" Command="{Binding RegisterCommand}"
-                    Style="{StaticResource MainButtonStyle}" Height="40" />
         </StackPanel>
     </Grid>
 </Page>

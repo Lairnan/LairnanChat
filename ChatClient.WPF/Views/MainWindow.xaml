@@ -41,23 +41,31 @@
                                 Content="&lt;-"
                                 FontSize="18"
                                 Style="{StaticResource MainButtonStyle}" />
-                        <controls:BaseComboBox Grid.Column="2"
-                                               Width="200"
-                                               ItemsSource="{Binding Path=Servers, UpdateSourceTrigger=PropertyChanged}"
-                                               SelectedItem="{Binding Path=SelectedServer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                               Command="{Binding Path=SelectedServerChangedCommand}"
-                                               CommandParameter="{Binding Path=SelectedServer}">
-                            <controls:BaseComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Ellipse Width="10" Height="10" Margin="0,0,5,0"
-                                                 Fill="{Binding Path=IsConnected, Converter={StaticResource ServerStatusToColorConverter}, UpdateSourceTrigger=PropertyChanged}"/>
-                                        <TextBlock Style="{StaticResource ComboBoxTextBlockStyle}"
-                                                   Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </controls:BaseComboBox.ItemTemplate>
-                        </controls:BaseComboBox>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                            <controls:BaseComboBox Width="200"
+                                                   ItemsSource="{Binding Path=Servers, UpdateSourceTrigger=PropertyChanged}"
+                                                   SelectedItem="{Binding Path=SelectedServer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                   Command="{Binding Path=SelectedServerChangedCommand}"
+                                                   CommandParameter="{Binding Path=SelectedServer}">
+                                <controls:BaseComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Ellipse Width="10" Height="10" Margin="0,0,5,0"
+                                                     Fill="{Binding Path=IsConnected, Converter={StaticResource ServerStatusToColorConverter}, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBlock Style="{StaticResource ComboBoxTextBlockStyle}"
+                                                       Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </controls:BaseComboBox.ItemTemplate>
+                            </controls:BaseComboBox>
+                            <Button Content="⏻"
+                                    Style="{StaticResource MainButtonStyle}"
+                                    VerticalContentAlignment="Center"
+                                    HorizontalContentAlignment="Center"
+                                    ToolTip="Disconnect"
+                                    Command="{Binding DisconnectCommand}"
+                                    CommandParameter="{Binding SelectedServer}"/>
+                        </StackPanel>
                     </Grid>
                     <Frame Grid.Row="1"
                            Content="{Binding CurrentPage}"

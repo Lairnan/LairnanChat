@@ -65,15 +65,16 @@ namespace LairnanChat.Plugins.Layer.Implements.Services
                 return new ActionResult(ResultType.Error, $"Use {nameof(SetUrlServer)} before try connect.");
             }
 
-            ServerInfo.IsConnected = false;
             _logger.LogInformation("[{MethodName}] Connecting to {Url}", nameof(ConnectAsync), ServerInfo.Url);
             ArgumentNullException.ThrowIfNull(authUser);
 
             if (_webSocket is { State: WebSocketState.Open or WebSocketState.Connecting })
             {
                 _logger.LogWarning("[{MethodName}] Already connected", nameof(ConnectAsync));
+                ServerInfo.IsConnected = true;
                 return new ActionResult(ResultType.Error, "Already connected");
             }
+            ServerInfo.IsConnected = false;
 
             var webSocket = new ClientWebSocket();
             try

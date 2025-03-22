@@ -16,7 +16,7 @@ namespace LairnanChat.Plugins.Layer.Implements.Services
 
         public event Action<IChatService?> ActiveChatServiceChanged = delegate { };
 
-        public bool AutoRedirectOnDisconnect { get; set; } = true;
+        public bool AutoRedirectOnDisconnect { get; set; } = false;
 
         private readonly ILogger<ChatServerManager> _logger;
         private readonly IServiceProvider _provider;
@@ -33,7 +33,16 @@ namespace LairnanChat.Plugins.Layer.Implements.Services
             {
                 TryGetOrAddServer(server.Name, server.Url);
             }
-            
+            try
+            {
+                var autoRedirect = config.GetValue<bool?>("AutoRedirectOnDisconnect");
+                if (autoRedirect.HasValue) AutoRedirectOnDisconnect = autoRedirect.Value;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error on getting auto redirection value from configuration");
+            }
+
             ActiveChatServiceChanged += chatService => ActiveChatService = chatService;
         }
 
@@ -155,18 +164,18 @@ namespace LairnanChat.Plugins.Layer.Implements.Services
                     return;
                 }
                 
-                if (ActiveChatService == chatService)
-                    ActiveChatServiceChanged(null);
-
                 _chatServices.Remove(chatService);
                 _availableServers.Remove(chatService.ServerInfo!);
+                if (AutoRedirectOnDisconnect) RedirectLastServer();
+                else if (ActiveChatService == chatService)
+                    ActiveChatServiceChanged(null);
             }
         }
 
         private void RedirectLastServer()
         {
-            var serverInfo = _availableServers.LastOrDefault();
-            SetActiveServer(serverInfo);
+            var serverInfo = _availableServers.FirstOrDefault(s => s.IsConnected);
+            if (serverInfo != null) SetActiveServer(serverInfo);
         }
     }
 }

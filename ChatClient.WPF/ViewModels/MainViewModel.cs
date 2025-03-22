@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Input;
 using ChatClient.WPF.Interfaces;
 using ChatClient.WPF.Interfaces.ViewModels.Pages;
@@ -21,13 +22,18 @@ public class MainViewModel : NotifyBase, IMainWindowVm
     private IPageBaseVm? _currentPageVm;
     private ICommand? _goToBackCommand;
     private ICommand? _selectedServerChangedCommand;
+    private ICommand? _disconnectCommand;
 
     public MainViewModel(IPageService pageService, IChatServerManager chatServerManager)
     {
         _chatServerManager = chatServerManager;
         this.Servers = new ObservableCollection<ChatServerInfo>(_chatServerManager.AvailableServers);
         this.SelectedServer = this.Servers.FirstOrDefault();
-        SelectedServerChangedCommand.Execute(this.SelectedServer);
+        SelectedServerChangedCommand.Execute(this.Servers.FirstOrDefault());
+        _chatServerManager.ActiveChatServiceChanged += chatService =>
+        {
+            this.SelectedServer = chatService?.ServerInfo;
+        };
         
         _pageService = pageService;
         _pageService.OnPageChanged += NavigateAction;
@@ -90,8 +96,23 @@ public class MainViewModel : NotifyBase, IMainWindowVm
     public ChatServerInfo? SelectedServer
     {
         get => GetProperty<ChatServerInfo?>();
-        set => SetProperty(value);
+        set => SetProperty(value, ServerInfoChanged);
     }
+
+    private void ServerInfoChanged(ChatServerInfo? serverInfo)
+    {
+        var info = GetProperty<ChatServerInfo?>(nameof(SelectedServer));
+        if (info != null) info.PropertyChanged += SelectedServer_PropertyChanged;
+        if (serverInfo != null) serverInfo.PropertyChanged += SelectedServer_PropertyChanged;
+        CommandManager.InvalidateRequerySuggested();
+    }
+
+    private void SelectedServer_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(SelectedServer.IsConnected))
+            CommandManager.InvalidateRequerySuggested();
+    }
+    
     public ICommand SelectedServerChangedCommand => _selectedServerChangedCommand ??=
         new RelayCommand<ChatServerInfo>(server =>
         {
@@ -99,4 +120,10 @@ public class MainViewModel : NotifyBase, IMainWindowVm
             if (Servers.FirstOrDefault(s => s.Url == server.Url) == null) Servers.Add(server);
             // TODO: сделать возможность добавлять новый сервер при выборе в списке (Добавить новый). Должен быть в самом верху, всегда
         });
+
+    public ICommand DisconnectCommand => _disconnectCommand ??=
+        new RelayCommand<ChatServerInfo>(server =>
+        {
+            _chatServerManager.DisconnectAsync(server.Url);
+        }, server => server is { IsConnected: true });
 }
