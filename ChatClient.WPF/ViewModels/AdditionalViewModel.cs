@@ -28,11 +28,7 @@ public class AdditionalViewModel : NotifyBase, IAdditionalWindowVm
     {
         this.Title = page.Title;
         this.CurrentPageVm = page.DataContext;
-        if (page.DataContext != null)
-        {
-            page.DataContext.SetPageService(_pageService);
-            page.DataContext.SetBaseWindow(this.WindowBase!);
-        }
+        page.DataContext?.SetBaseWindow(this.WindowBase);
 
         await Task.Delay(350);
         this.CurrentPage = page;
@@ -63,7 +59,7 @@ public class AdditionalViewModel : NotifyBase, IAdditionalWindowVm
     public IWindowBase WindowBase
     {
         get => GetProperty<IWindowBase>();
-        set => SetProperty(value);
+        set => SetProperty(value, action: s => { this.CurrentPageVm?.SetBaseWindow(s); });
     }
 
     public void ChangePage<T>()

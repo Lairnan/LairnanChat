@@ -12,7 +12,6 @@ public class PageService : IPageService
 
     public void Navigate(IPageBase page)
     {
-        page.DataContext?.SetPageService(this);
         OnPageChanged?.Invoke(page);
         _history.Push(page);
     }
@@ -23,7 +22,6 @@ public class PageService : IPageService
 
         _history.Pop();
         var page = _history.Peek();
-        page.DataContext?.SetPageService(this);
         OnPageChanged?.Invoke(page);
     }
 }

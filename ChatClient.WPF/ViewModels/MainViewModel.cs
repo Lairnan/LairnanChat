@@ -59,12 +59,8 @@ public class MainViewModel : NotifyBase, IMainWindowVm
         this.Title = page.Title;
         this.CurrentPageVm = page.DataContext;
 
-        if (page.DataContext != null)
-        {
-            page.DataContext.SetPageService(_pageService);
-            page.DataContext.SetBaseWindow(this.WindowBase);
-        }
-        
+        page.DataContext?.SetBaseWindow(this.WindowBase);
+
         await Task.Delay(350);
         this.CurrentPage = page;
         await Task.Delay(25);

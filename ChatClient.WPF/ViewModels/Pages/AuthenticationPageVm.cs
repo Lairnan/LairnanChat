@@ -22,7 +22,6 @@ public class AuthenticationPageVm : NotifyBase, IAuthenticationPageVm
 {
     #region Private fields.
 
-    private IPageService? _pageService;
     private IWindowBase _windowBase = null!;
     
     private readonly ILogger<AuthenticationPageVm> _logger;
@@ -67,30 +66,22 @@ public class AuthenticationPageVm : NotifyBase, IAuthenticationPageVm
 
     private void CheckConnectionServer()
     {
-        if (_pageService == null) return;
-        var window = _viewFactory.IsWindowCreated<IMainWindow, IAuthenticationPage>();
-        if (window == null)
+        if (_windowBase.DataContext == null) return;
+        
+        if (_windowBase.DataContext.CurrentPageVm is not IAuthenticationPageVm)
         {
             if (_chatService == null || !IsConnected(_chatService.GetConnectionStatus()))
             {
                 Factory.ShowPopUp("Error", "You are not connected to server.", 0, true, new DialogButton(ButtonType.Ok, "Ok"));
-                if (_pageService != null)
-                {
-                    var getChatsPage = IoC.Resolve<IAuthenticationPage>();
-                    _pageService.Navigate(getChatsPage);
-                }
+                _windowBase.DataContext.ChangePage<IAuthenticationPage>();
             }
             return;
         }
-        
+
         if (_chatService == null || !IsConnected(_chatService.GetConnectionStatus())) return;
 
         Factory.ShowPopUp("Warning", "You already connected to the server.", 0, true, new DialogButton(ButtonType.Ok, "Ok"));
-        if (_pageService != null)
-        {
-            var getChatsPage = IoC.Resolve<IGetChatsPage>();
-            _pageService.Navigate(getChatsPage);
-        }
+        _windowBase.DataContext.ChangePage<IGetChatsPage>();
     }
 
     #region Properties
@@ -181,11 +172,6 @@ public class AuthenticationPageVm : NotifyBase, IAuthenticationPageVm
     public void SetBaseWindow(IWindowBase windowBase)
     {
         _windowBase = windowBase;
-    }
-
-    public void SetPageService(IPageService pageService)
-    {
-        _pageService = pageService;
         Task.Run(async () =>
         {
             await Task.Delay(5000);
