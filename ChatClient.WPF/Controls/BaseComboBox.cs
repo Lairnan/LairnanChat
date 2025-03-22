@@ -11,6 +11,7 @@ public class BaseComboBox : ComboBox
         SelectionChanged += (_, _) =>
         {
             this.SelectionBoxItem = this.SelectedItem;
+            if (Command?.CanExecute(CommandParameter) ?? false) Command?.Execute(CommandParameter);
         };
     }
     

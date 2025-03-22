@@ -1,6 +1,6 @@
-using System.Drawing;
 using System.Globalization;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace ChatClient.WPF.Converters;
 
@@ -10,9 +10,9 @@ public class ServerStatusToColorConverter : IValueConverter
     {
         if (value is bool isConnected)
         {
-            return isConnected ? Color.Green : Color.Red;
+            return new SolidColorBrush(isConnected ? Colors.Green : Colors.Red);
         }
-        return Color.Gray;
+        return new SolidColorBrush(Colors.Gray);
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => Binding.DoNothing;

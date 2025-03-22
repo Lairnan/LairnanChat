@@ -1,8 +1,10 @@
 using System.Net.WebSockets;
 using System.Text;
 using LairnanChat.Plugins.Layer.Enums;
+using LairnanChat.Plugins.Layer.Implements;
 using LairnanChat.Plugins.Layer.Implements.Models;
 using LairnanChat.Plugins.Layer.Implements.Services;
+using LairnanChat.Plugins.Layer.Interfaces;
 using LairnanChat.Plugins.Layer.Interfaces.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -67,7 +69,7 @@ public class ChatServerConnectionManagerIntegrationTests
 
         services.AddTransient<ILanguageTranslationService, LanguageTranslationService>();
         services.AddSingleton<IChatRoomsDatabase, ChatRoomsDatabase>();
-        services.AddTransient<IChatService, ChatService>();
+        services.AddTransient<IChatServiceFactory, ChatServiceFactory>();
         services.AddTransient<IChatServer, ChatServer>();
         services.AddSingleton<IChatServerManager, ChatServerManager>();
 

@@ -7,9 +7,9 @@ namespace LairnanChat.Plugins.Layer.Interfaces.Services;
 public interface IChatService
 {
     /// <summary>
-    /// Gets url address of connected server
+    /// Gets chat server info
     /// </summary>
-    string? Url { get; }
+    ChatServerInfo ServerInfo { get; }
     
     IList<ActionResult>? ReceivedResults { get; }
     
@@ -39,14 +39,12 @@ public interface IChatService
     /// <summary>
     /// Connects to the chat server asynchronously.
     /// </summary>
-    /// <param name="url">Url to connect to chat server.</param>
     /// <param name="authUser">User that connect to server.</param>
     /// <param name="needRegistration">
     /// If authUser already registered, then authorization to server.
     /// If server not accept authorization system, this flag not included
     /// </param>
     /// <returns>A task that represents the asynchronous connect operation.</returns>
-    Task<ActionResult> ConnectAsync(string url, AuthUser authUser, bool needRegistration = false);
     Task<ActionResult> ConnectAsync(AuthUser authUser, bool needRegistration = false);
 
     void SetUrlServer(string url);

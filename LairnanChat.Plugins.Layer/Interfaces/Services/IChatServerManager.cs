@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using LairnanChat.Plugins.Layer.Implements.Models;
 
 namespace LairnanChat.Plugins.Layer.Interfaces.Services;
@@ -16,12 +17,12 @@ public interface IChatServerManager
     /// <summary>
     /// Provides a read-only list of available chat servers.
     /// </summary>
-    IEnumerable<ChatServerInfo> AvailableServers { get; }
+    ReadOnlyObservableCollection<ChatServerInfo> AvailableServers { get; }
     
     /// <summary>
     /// Sets the active chat service using ChatServerInfo without connecting.
     /// </summary>
-    void SetActiveServer(ChatServerInfo serverInfo);
+    void SetActiveServer(ChatServerInfo? serverInfo);
     
     /// <summary>
     /// Connects using the provided chat service instance and authenticates the user.
@@ -55,7 +56,8 @@ public interface IChatServerManager
     /// <summary>
     /// Adds a new server.
     /// </summary>
-    void AddServer(string name, string url);
+    IChatService TryGetOrAddServer(string name, string url);
+    IChatService TryGetOrAddServer(ChatServerInfo serverInfo);
     
     /// <summary>
     /// Removes a server by URL.

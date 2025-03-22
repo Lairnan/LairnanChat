@@ -1,4 +1,6 @@
+using LairnanChat.Plugins.Layer.Implements;
 using LairnanChat.Plugins.Layer.Implements.Services;
+using LairnanChat.Plugins.Layer.Interfaces;
 using LairnanChat.Plugins.Layer.Interfaces.Services;
 using LairnanChat.PluginsSetup;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +15,7 @@ public class Plugin : IPlugin
         serviceCollection.AddSingleton<IChatRoomsDatabase, ChatRoomsDatabase>();
         serviceCollection.AddTransient<ILanguageTranslationService, LanguageTranslationService>();
         serviceCollection.AddSingleton<IChatServer, ChatServer>();
-        serviceCollection.AddTransient<IChatService, ChatService>();
+        serviceCollection.AddSingleton<IChatServiceFactory, ChatServiceFactory>();
         serviceCollection.AddScoped<IChatServerManager, ChatServerManager>();
         serviceCollection.AddLogging();
     }

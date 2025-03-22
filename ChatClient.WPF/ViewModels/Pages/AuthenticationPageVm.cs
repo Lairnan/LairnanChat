@@ -140,8 +140,8 @@ public class AuthenticationPageVm : NotifyBase, IAuthenticationPageVm
         var authUser = new AuthUser(Username, Password, _selectedLanguage);
         try
         {
-            var actionResult = await _chatService.ConnectAsync(authUser);
-            if (actionResult.ResultType == ResultType.Error)
+            var chatService = await _chatServerManager.ConnectAsync(_chatService, authUser);
+            if (chatService == null)
             {
                 ErrorMessage = "Error connecting to server. See logs for details.";
                 return;

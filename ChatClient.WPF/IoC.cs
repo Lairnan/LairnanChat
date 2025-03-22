@@ -66,13 +66,13 @@ public static class IoC
 
     private static IServiceCollection AddWindows(this IServiceCollection services)
     {
-        services.AddTransient<IMainWindow, MainWindow>();
-        services.AddTransient<IAdditionalWindow, AdditionalWindow>();
+        services.AddTransient<IMainWindowVm, MainViewModel>();
+        services.AddTransient<IAdditionalWindowVm, AdditionalViewModel>();
         
         services.AddTransient<IWindowBase, WindowBase>();
         
-        services.AddTransient<IMainWindowVm, MainViewModel>();
-        services.AddTransient<IAdditionalWindowVm, AdditionalViewModel>();
+        services.AddTransient<IMainWindow, MainWindow>();
+        services.AddTransient<IAdditionalWindow, AdditionalWindow>();
         
         return services;
     }
@@ -83,7 +83,6 @@ public static class IoC
         services.AddTransient<IPageBase, PageBase>();
         services.AddTransient<IPopUp, PopUpControl>();
         services.AddTransient<IAuthenticationPage, AuthenticationPage>();
-
 
         return services;
     }
